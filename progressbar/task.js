@@ -15,5 +15,13 @@ form.addEventListener('submit', (event) => {
     }
   });
 
+  xhr.addEventListener('load', () => {
+    if (xhr.status === 200 || xhr.status === 201) {
+      progress.value = 1;
+      const response = JSON.parse(xhr.responseText);
+      alert(response.message || 'Загрузка завершена успешно!');
+    }
+  });
+
   xhr.send(formData);
 });
