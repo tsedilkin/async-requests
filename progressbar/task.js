@@ -4,6 +4,8 @@ const form = document.getElementById('form');
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
+  progress.value = 0;
+
   const formData = new FormData(form);
   const xhr = new XMLHttpRequest();
 
@@ -16,11 +18,16 @@ form.addEventListener('submit', (event) => {
   });
 
   xhr.addEventListener('load', () => {
-    if (xhr.status === 200 || xhr.status === 201) {
-      progress.value = 1;
-      const response = JSON.parse(xhr.responseText);
-      alert(response.message || 'Загрузка завершена успешно!');
+    if (xhr.status !== 200 && xhr.status !== 201) {
+      return;
     }
+
+    progress.value = 1;
+
+    // Даём браузеру отрисовать заполненный прогресс до блокирующего alert
+    setTimeout(() => {
+      alert('Загрузка успешно завершена!');
+    }, 100);
   });
 
   xhr.send(formData);
